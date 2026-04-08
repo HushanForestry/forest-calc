@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>對我生材 - 材積與重量計算機</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background-color: #f0f2f0; color: #2d3436; }
+        .container { max-width: 450px; background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: auto; }
+        h2 { border-left: 5px solid #556b2f; padding-left: 10px; color: #556b2f; margin-bottom: 25px; }
+        .input-group { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #dfe6e9; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+        input:focus, select:focus { outline: none; border-color: #556b2f; }
+        .result-box { background: #f9fbf9; padding: 20px; border-radius: 10px; margin-top: 25px; border: 1px dashed #556b2f; }
+        .result-row { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; }
+        .result-label { font-size: 16px; color: #636e72; }
+        .result-value { font-size: 22px; font-weight: bold; color: #2d3436; }
+        .weight-text { color: #d63031; } /* 重量顯示為紅色提醒 */
+        .footer { font-size: 11px; color: #b2bec3; margin-top: 20px; text-align: center; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🌲 對我生材｜材積計算</h2>
+    
+    <div class="input-group">
+        <label>選擇樹種 (影響重量估算)</label>
+        <select id="species" onchange="calculate()">
+            <option value="1.8">松杉類 (針葉木 - 較輕)</option>
+            <option value="2.8">楠櫧類 (闊葉木 - 較重)</option>
+            <option value="2.2">一般雜木 (平均值)</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>末口直徑 (台寸)</label>
+        <input type="number" id="diameter" placeholder="請輸入尺寸" oninput="calculate()">
+    </div>
+    
+    <div class="input-group">
+        <label>長度 (台尺)</label>
+        <input type="number" id="length" placeholder="請輸入尺寸" oninput="calculate()">
+    </div>
+    
+    <div class="input-group">
+        <label>數量 (支)</label>
+        <input type="number" id="count" value="1" oninput="calculate()">
+    </div>
+
+    <div class="result-box">
+        <div class="result-row">
+            <span class="result-label">總材積：</span>
+            <span class="result-value"><span id="total_vol">0</span> 才</span>
+        </div>
+        <div class="result-row">
+            <span class="result-label">預估重量：</span>
+            <span class="result-value weight-text"><span id="total_weight">0</span> kg</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        公式：(寸² × 尺 / 10) × 數量<br>
+        重量僅供參考，會隨含水率不同而有增減。
+    </div>
+</div>
+
+<script>
+    function calculate() {
+        const speciesDensity = document.getElementById('species').value;
+        const d = document.getElementById('diameter').value;
+        const l = document.getElementById('length').value;
+        const n = document.getElementById('count').value;
+        
+        if (d && l && n) {
+            // 計算材積
+            const volume = (d * d * l / 10) * n;
+            document.getElementById('total_vol').innerText = volume.toFixed(1);
+            
+            // 計算重量 (才數 * 樹種比重)
+            const weight = volume * speciesDensity;
+            document.getElementById('total_weight').innerText = weight.toFixed(1);
+        } else {
+            document.getElementById('total_vol').innerText = "0";
+            document.getElementById('total_weight').innerText = "0";
+        }
+    }
+</script>
+
+</body>
+</html>
