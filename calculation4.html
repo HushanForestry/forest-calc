@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>對我生材｜材積快速計算</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background-color: #f8f9fa; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; width: 100%; max-width: 360px; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #3e2723; text-align: center; border-bottom: 2px solid #d7ccc8; padding-bottom: 10px; }
+        .input-box { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; color: #5d4037; }
+        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 18px; box-sizing: border-box; }
+        .display-area { background: #efebe9; border-radius: 10px; padding: 20px; margin-top: 20px; text-align: center; }
+        .total-label { font-size: 14px; color: #795548; }
+        .total-value { font-size: 32px; font-weight: bold; color: #3e2723; }
+        .unit { font-size: 16px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🌲 對我生材：簡易材積計算機</h2>
+    
+    <div class="input-box">
+        <label>原木末口直徑 (台寸)</label>
+        <input type="number" id="d" placeholder="例如：6" oninput="calc()">
+    </div>
+
+    <div class="input-box">
+        <label>木材長度 (台尺)</label>
+        <input type="number" id="l" placeholder="例如：12" oninput="calc()">
+    </div>
+
+    <div class="input-box">
+        <label>數量 (支)</label>
+        <input type="number" id="qty" value="1" oninput="calc()">
+    </div>
+
+    <div class="display-area">
+        <div class="total-label">總計材積</div>
+        <div class="total-value"><span id="res">0.0</span><span class="unit">才</span></div>
+    </div>
+
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 15px;">
+        ※ 材積公式：(寸² × 尺) / 10 × 數量 <br> 
+          1寸＝3.03公分 ； 1尺＝10寸 <br>
+        ※ 台灣常見造材長度為：6 ,8 ,10 ,12 呎 <br>
+        ※ 🪵詳情請洽「<a href="https://www.facebook.com/HUSHANForestry/" target="_blank" style="color: #2d5a27; font-weight: bold; text-decoration: underline;">虎山林業有限公司</a>」
+    </p>
+</div>
+
+<script>
+    function calc() {
+        const d = parseFloat(document.getElementById('d').value);
+        const l = parseFloat(document.getElementById('l').value);
+        const qty = parseFloat(document.getElementById('qty').value);
+
+        if (d > 0 && l > 0 && qty > 0) {
+            const total = (d * d * l / 10) * qty;
+            // 顯示到小數點第一位
+            document.getElementById('res').innerText = total.toFixed(1);
+        } else {
+            document.getElementById('res').innerText = "0.0";
+        }
+    }
+</script>
+
+</body>
+</html>
